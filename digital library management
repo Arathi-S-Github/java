@@ -1,0 +1,123 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Book {
+    private String title;
+    private String author;
+    private String ISBN;
+
+    public Book(String title, String author, String ISBN) {
+        this.title = title;
+        this.author = author;
+        this.ISBN = ISBN;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getISBN() {
+        return ISBN;
+    }
+
+    @Override
+    public String toString() {
+        return "Title: " + title + ", Author: " + author + ", ISBN: " + ISBN;
+    }
+}
+
+class Library {
+    private ArrayList<Book> books;
+
+    public Library() {
+        books = new ArrayList<>();
+    }
+
+    public void addBook(Book book) {
+        books.add(book);
+        System.out.println("Book added successfully.");
+    }
+
+    public void removeBook(String ISBN) {
+        boolean removed = books.removeIf(book -> book.getISBN().equals(ISBN));
+        if (removed) {
+            System.out.println("Book removed successfully.");
+        } else {
+            System.out.println("Book not found.");
+        }
+    }
+
+    public void displayBooks() {
+        if (books.isEmpty()) {
+            System.out.println("No books in the library.");
+        } else {
+            for (Book book : books) {
+                System.out.println(book);
+            }
+        }
+    }
+}
+
+public class DigitalLibrary {
+    private static Scanner scanner = new Scanner(System.in);
+    private static Library library = new Library();
+
+    public static void main(String[] args) {
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("\nDigital Library Management System");
+            System.out.println("1. Add Book");
+            System.out.println("2. Remove Book");
+            System.out.println("3. Display Books");
+            System.out.println("4. Exit");
+            System.out.print("Choose an option: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (choice) {
+                case 1:
+                    addBook();
+                    break;
+                case 2:
+                    removeBook();
+                    break;
+                case 3:
+                    displayBooks();
+                    break;
+                case 4:
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+        System.out.println("Exiting Digital Library Management System.");
+    }
+
+    private static void addBook() {
+        System.out.print("Enter book title: ");
+        String title = scanner.nextLine();
+        System.out.print("Enter book author: ");
+        String author = scanner.nextLine();
+        System.out.print("Enter book ISBN: ");
+        String ISBN = scanner.nextLine();
+
+        Book book = new Book(title, author, ISBN);
+        library.addBook(book);
+    }
+
+    private static void removeBook() {
+        System.out.print("Enter book ISBN to remove: ");
+        String ISBN = scanner.nextLine();
+        library.removeBook(ISBN);
+    }
+
+    private static void displayBooks() {
+        library.displayBooks();
+    }
+}
